@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vida em Dias</title>
+
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:Arial, Helvetica, sans-serif;
+    }
+
+    body{
+      background:#0f1115;
+      color:white;
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      padding:40px 20px;
+    }
+
+    h1{
+      margin-bottom:10px;
+      font-size:2rem;
+    }
+
+    p{
+      color:#bdbdbd;
+      margin-bottom:30px;
+      text-align:center;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(31, 14px);
+      gap:8px;
+      max-width:700px;
+      justify-content:center;
+    }
+
+    .dot{
+      width:14px;
+      height:14px;
+      border-radius:50%;
+      background:#2b2f38;
+      transition:0.3s;
+    }
+
+    .passed{
+      background:#ffffff;
+      box-shadow:0 0 6px rgba(255,255,255,0.8);
+    }
+
+    .today{
+      background:#4ade80;
+      transform:scale(1.3);
+      box-shadow:0 0 10px #4ade80;
+    }
+
+    .info{
+      margin-top:30px;
+      text-align:center;
+      line-height:1.8;
+    }
+
+    .number{
+      font-size:2rem;
+      font-weight:bold;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>365 Dias</h1>
+  <p>Cada ponto representa um dia do ano.</p>
+
+  <div class="grid" id="grid"></div>
+
+  <div class="info">
+    <div>
+      Dia atual:
+      <span class="number" id="currentDay"></span>
+    </div>
+
+    <div>
+      Restam:
+      <span class="number" id="remaining"></span>
+      dias
+    </div>
+  </div>
+
+  <script>
+    const grid = document.getElementById("grid");
+
+    const now = new Date();
+
+    const startOfYear = new Date(now.getFullYear(), 0, 0);
+
+    const diff = now - startOfYear;
+
+    const oneDay = 1000 * 60 * 60 * 24;
+
+    const currentDay = Math.floor(diff / oneDay);
+
+    const totalDays =
+      ((now.getFullYear() % 4 === 0 && now.getFullYear() % 100 !== 0) ||
+      now.getFullYear() % 400 === 0)
+        ? 366
+        : 365;
+
+    document.getElementById("currentDay").textContent = currentDay;
+    document.getElementById("remaining").textContent =
+      totalDays - currentDay;
+
+    for(let i = 1; i <= totalDays; i++){
+
+      const dot = document.createElement("div");
+
+      dot.classList.add("dot");
+
+      if(i < currentDay){
+        dot.classList.add("passed");
+      }
+
+      if(i === currentDay){
+        dot.classList.add("today");
+      }
+
+      grid.appendChild(dot);
+    }
+  </script>
+
+</body>
+</html>
