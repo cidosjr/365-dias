@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Vida em Dias</title>
+  <title>365 Dias</title>
 
   <style>
     *{
@@ -24,14 +24,25 @@
     }
 
     h1{
+      font-size:2.2rem;
       margin-bottom:10px;
-      font-size:2rem;
     }
 
-    p{
-      color:#bdbdbd;
-      margin-bottom:30px;
+    .datetime{
+      margin-bottom:25px;
       text-align:center;
+      color:#cfcfcf;
+      line-height:1.8;
+    }
+
+    .date{
+      font-size:1.2rem;
+    }
+
+    .clock{
+      font-size:2rem;
+      font-weight:bold;
+      color:#4ade80;
     }
 
     .grid{
@@ -40,6 +51,7 @@
       gap:8px;
       max-width:700px;
       justify-content:center;
+      margin-top:20px;
     }
 
     .dot{
@@ -52,7 +64,7 @@
 
     .passed{
       background:#ffffff;
-      box-shadow:0 0 6px rgba(255,255,255,0.8);
+      box-shadow:0 0 6px rgba(255,255,255,0.7);
     }
 
     .today{
@@ -76,7 +88,11 @@
 <body>
 
   <h1>365 Dias</h1>
-  <p>Cada ponto representa um dia do ano.</p>
+
+  <div class="datetime">
+    <div class="date" id="date"></div>
+    <div class="clock" id="clock"></div>
+  </div>
 
   <div class="grid" id="grid"></div>
 
@@ -94,6 +110,43 @@
   </div>
 
   <script>
+
+    // =========================
+    // DATA E HORÁRIO
+    // =========================
+
+    function updateDateTime(){
+
+      const now = new Date();
+
+      const options = {
+        weekday:'long',
+        year:'numeric',
+        month:'long',
+        day:'numeric'
+      };
+
+      const formattedDate =
+        now.toLocaleDateString('pt-BR', options);
+
+      const formattedTime =
+        now.toLocaleTimeString('pt-BR');
+
+      document.getElementById('date').textContent =
+        formattedDate;
+
+      document.getElementById('clock').textContent =
+        formattedTime;
+    }
+
+    setInterval(updateDateTime, 1000);
+
+    updateDateTime();
+
+    // =========================
+    // CONTADOR DOS DIAS
+    // =========================
+
     const grid = document.getElementById("grid");
 
     const now = new Date();
@@ -107,12 +160,15 @@
     const currentDay = Math.floor(diff / oneDay);
 
     const totalDays =
-      ((now.getFullYear() % 4 === 0 && now.getFullYear() % 100 !== 0) ||
+      ((now.getFullYear() % 4 === 0 &&
+      now.getFullYear() % 100 !== 0) ||
       now.getFullYear() % 400 === 0)
         ? 366
         : 365;
 
-    document.getElementById("currentDay").textContent = currentDay;
+    document.getElementById("currentDay").textContent =
+      currentDay;
+
     document.getElementById("remaining").textContent =
       totalDays - currentDay;
 
@@ -132,6 +188,7 @@
 
       grid.appendChild(dot);
     }
+
   </script>
 
 </body>
